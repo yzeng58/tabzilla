@@ -1,16 +1,21 @@
 from mothernet.prediction.tabpfn import TabPFNClassifier
 from models.basemodel import BaseModel
+import os 
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-class TabPFNModel(BaseModel):
+class TabFlexModel(BaseModel):
     def __init__(self, params, args):
         super().__init__(params, args)
 
         if args.objective == "regression":
             raise NotImplementedError("Does not support")
-        elif args.objective == "classification":
-            self.model = TabPFNClassifier(device='cuda', N_ensemble_configurations=32)
-        elif args.objective == "binary":
-            self.model = TabPFNClassifier(device='cuda', N_ensemble_configurations=32)
+        elif args.objective in ["classification", 'binary']:
+            self.model = TabPFNClassifier(
+                device='cuda', 
+                model_string = f'ssm_tabpfn_b4_maxnumclasses100_modellinear_attention_numfeatures1000_n1024_validdatanew_08_16_2024_18_14_40',
+                N_ensemble_configurations=3,
+                epoch = '460',
+            )
 
     def fit(self, X, y, X_val=None, y_val=None):
         #WARNING: When overwrite_warning is true, TabPFN will attempt to run on arbitrarily large datasets! This means if you run TabPFN on a large dataset without sketching/sampling it may crash rather than issuing a warning and refusing to run

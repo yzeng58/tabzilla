@@ -1,0 +1,10 @@
+run_experiment: model_name: tabflex
+run_experiment: dataset_name: openml__cardiotocography__9979,
+run_experiment: env_name: linear_attention
+run_experiment: instance_name: algs-tabflex-table1-0-5
+run_experiment: experiment_name: algs-tabflex-table1
+run_experiment: config_file: /home/shared/tabzilla/TabZilla/tabzilla_experiment_config.yml
+launching instance algs-tabflex-table1-0-5...
+../utils.sh: line 57: gcloud: command not found
+failed to create instance during attempt 2... (exit code: 127)
+trying again in 30 seconds...

@@ -10,7 +10,9 @@ from collections import namedtuple
 from pathlib import Path
 from typing import NamedTuple
 
-import optuna
+import optuna, pdb
+
+import wandb
 
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
@@ -48,6 +50,7 @@ class TabZillaObjective(object):
         self.dataset.subset_random_seed = self.experiment_args.subset_random_seed
         # directory where results will be written
         self.output_path = Path(self.experiment_args.output_dir).resolve()
+        self.dataset_str = self.dataset.name
 
         # create the scorer, and get the direction of optimization from the scorer object
         sc_tmp = get_scorer(dataset.target_type)
@@ -176,7 +179,7 @@ class TabZillaObjective(object):
 
         # write results to file
         result_file_base = self.output_path.joinpath(
-            f"{hparam_source}_trial{trial.number}"
+            f"{hparam_source}_trial{trial.number}_{self.dataset.name}_{self.model_handle.__name__}"
         )
         result.write(
             result_file_base,
