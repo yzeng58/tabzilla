@@ -26,6 +26,7 @@ from tabzilla_utils import (
     get_scorer,
 )
 
+from helper import init_wandb
 import sys
 sys.path.append(os.getcwd())
 from environment import WANDB_INFO
@@ -45,7 +46,6 @@ class TabZillaObjective(object):
         hparam_seed: int,
         random_parameters: bool,
         time_limit: int,
-        overwrite: bool = False,
     ):
         #  BaseModel handle that will be initialized and trained
         self.model_handle = model_handle
@@ -55,10 +55,6 @@ class TabZillaObjective(object):
         self.dataset.subset_random_seed = self.experiment_args.subset_random_seed
         # directory where results will be written
         output_dir = f'{self.experiment_args.output_dir}/{self.model_handle.__name__}/{self.dataset.name}'
-        if os.path.exists(output_dir) and not overwrite:
-            print(f"Output directory already exists: {output_dir}")
-            print('Exiting...')
-            exit(0)
             
         os.makedirs(output_dir, exist_ok=True)
         
@@ -228,7 +224,6 @@ def main(experiment_args, model_name, dataset_dir, overwrite = False):
             hparam_seed=experiment_args.hparam_seed,
             random_parameters=True,
             time_limit=experiment_args.trial_time_limit,
-            overwrite=overwrite,
         )
 
         print(
@@ -259,7 +254,6 @@ def main(experiment_args, model_name, dataset_dir, overwrite = False):
             hparam_seed=experiment_args.hparam_seed,
             random_parameters=False,
             time_limit=experiment_args.trial_time_limit,
-            overwrite=overwrite,
         )
 
         print(
@@ -338,15 +332,17 @@ if __name__ == "__main__":
         print(f"| {k}: {v}")
     
     if args.wandb:
-        wandb.init(
-            dir=WANDB_INFO['dir'],
-            project=WANDB_INFO['project'],
-            entity=WANDB_INFO['entity'],
-            config={
-                "model": args.model_name,
-                "dataset": os.path.split(args.dataset_dir)[-1],
-                **vars(experiment_args)
-            },
+        wandb_config = {
+            "model": args.model_name,
+            "dataset": os.path.split(args.dataset_dir)[-1],
+            **vars(experiment_args)
+        }
+        init_wandb(
+            wandb_entity = WANDB_INFO['entity'],
+            wandb_proj = WANDB_INFO['project'],
+            wandb_config = wandb_config,
+            overwrite = args.overwrite,
         )
+        
 
     main(experiment_args, args.model_name, args.dataset_dir, args.overwrite)

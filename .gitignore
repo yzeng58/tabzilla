@@ -138,3 +138,7 @@ dmypy.json
 TabZilla/models/hopular/auxiliary/resources/*
 
 environment.py
+**/results/
+**/wandb/
+**/metadataset_clean.csv
+**/metafeatures_clean.csv

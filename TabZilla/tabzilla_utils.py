@@ -133,10 +133,12 @@ class ExperimentResult:
             cls=NpEncoder,
         )
         
+        
         if wandb.run is not None:
             score_dict = result_dict["scorers"]
             noscore_dict = result_dict.copy()
             del noscore_dict["scorers"]
+            del noscore_dict['timers']
             
             def wandb_log_nonscore_dict(wandb_dict):
                 for k, v in wandb_dict.items():
@@ -152,6 +154,7 @@ class ExperimentResult:
                 for mode in ['train', 'val', 'test']:
                     for metric in score_dict[mode]:
                         log_dict[f"{mode}_{metric}"] = score_dict[mode][metric][split-1]
+                    log_dict[f"{mode}_time"] = result_dict['timers'][mode][split-1]
                 wandb.log(log_dict)
                 
             
