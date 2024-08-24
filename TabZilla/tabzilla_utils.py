@@ -12,6 +12,8 @@ from tabzilla_data_processing import process_data
 from tabzilla_datasets import TabularDataset
 from utils.scorer import BinScorer, ClassScorer, RegScorer
 from utils.timer import Timer
+import wandb, pdb
+import pandas as pd
 
 
 class NpEncoder(json.JSONEncoder):
@@ -130,7 +132,29 @@ class ExperimentResult:
             compress=compress,
             cls=NpEncoder,
         )
-
+        
+        if wandb.run is not None:
+            score_dict = result_dict["scorers"]
+            noscore_dict = result_dict.copy()
+            del noscore_dict["scorers"]
+            
+            def wandb_log_nonscore_dict(wandb_dict):
+                for k, v in wandb_dict.items():
+                    if isinstance(v, dict):
+                        wandb_log_nonscore_dict(v)
+                    else:
+                        wandb.log({k: v})
+            wandb_log_nonscore_dict(noscore_dict)
+            
+            n_split = len(score_dict["train"]['Accuracy'])
+            for split in range(1, n_split+1):
+                log_dict = {'split': split, 'trial_number': self.trial_number}
+                for mode in ['train', 'val', 'test']:
+                    for metric in score_dict[mode]:
+                        log_dict[f"{mode}_{metric}"] = score_dict[mode][metric][split-1]
+                wandb.log(log_dict)
+                
+            
         if write_predictions:
             # add the predictions (lots of data) to a new dict
             prediction_dict = result_dict.copy()
@@ -309,7 +333,7 @@ def cross_validation(
 
 
 def write_dict_to_json(x: dict, filepath: Path, compress=False, cls=None):
-    assert not filepath.is_file(), f"file already exists: {filepath}"
+    # assert not filepath.is_file(), f"file already exists: {filepath}"
     assert filepath.parent.is_dir(), f"directory does not exist: {filepath.parent}"
     if not compress:
         with filepath.open("w", encoding="UTF-8") as f:

@@ -12,7 +12,7 @@ from typing import NamedTuple
 
 import optuna, pdb
 
-import wandb
+import wandb, os
 
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
@@ -25,6 +25,10 @@ from tabzilla_utils import (
     get_experiment_parser,
     get_scorer,
 )
+
+import sys
+sys.path.append(os.getcwd())
+from environment import WANDB_INFO
 
 
 class TabZillaObjective(object):
@@ -41,6 +45,7 @@ class TabZillaObjective(object):
         hparam_seed: int,
         random_parameters: bool,
         time_limit: int,
+        overwrite: bool = False,
     ):
         #  BaseModel handle that will be initialized and trained
         self.model_handle = model_handle
@@ -49,7 +54,15 @@ class TabZillaObjective(object):
         self.experiment_args = experiment_args
         self.dataset.subset_random_seed = self.experiment_args.subset_random_seed
         # directory where results will be written
-        self.output_path = Path(self.experiment_args.output_dir).resolve()
+        output_dir = f'{self.experiment_args.output_dir}/{self.model_handle.__name__}/{self.dataset.name}'
+        if os.path.exists(output_dir) and not overwrite:
+            print(f"Output directory already exists: {output_dir}")
+            print('Exiting...')
+            exit(0)
+            
+        os.makedirs(output_dir, exist_ok=True)
+        
+        self.output_path = Path(output_dir).resolve()
         self.dataset_str = self.dataset.name
 
         # create the scorer, and get the direction of optimization from the scorer object
@@ -179,13 +192,14 @@ class TabZillaObjective(object):
 
         # write results to file
         result_file_base = self.output_path.joinpath(
-            f"{hparam_source}_trial{trial.number}_{self.dataset.name}_{self.model_handle.__name__}"
+            f"{hparam_source}_trial{trial.number}"
         )
         result.write(
             result_file_base,
             write_predictions=self.experiment_args.write_predictions,
             compress=False,
         )
+        
 
         return obj_val
 
@@ -194,7 +208,7 @@ def iteration_callback(study, trial):
     print(f"Trial {trial.number + 1} complete")
 
 
-def main(experiment_args, model_name, dataset_dir):
+def main(experiment_args, model_name, dataset_dir, overwrite = False):
     # read dataset from folder
     dataset = TabularDataset.read(Path(dataset_dir).resolve())
 
@@ -214,6 +228,7 @@ def main(experiment_args, model_name, dataset_dir):
             hparam_seed=experiment_args.hparam_seed,
             random_parameters=True,
             time_limit=experiment_args.trial_time_limit,
+            overwrite=overwrite,
         )
 
         print(
@@ -244,6 +259,7 @@ def main(experiment_args, model_name, dataset_dir):
             hparam_seed=experiment_args.hparam_seed,
             random_parameters=False,
             time_limit=experiment_args.trial_time_limit,
+            overwrite=overwrite,
         )
 
         print(
@@ -286,6 +302,7 @@ if __name__ == "__main__":
         type=str,
         help="directory containing pre-processed dataset.",
     )
+    
     parser.add_argument(
         "--model_name",
         required=True,
@@ -293,6 +310,19 @@ if __name__ == "__main__":
         choices=ALL_MODELS,
         help="name of the algorithm",
     )
+    
+    parser.add_argument(
+        "--wandb",
+        action="store_true",
+        help="log results to wandb",
+    )
+    
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="overwrite existing results",
+    )
+    
     args = parser.parse_args()
     print(f"ARGS: {args}")
 
@@ -302,6 +332,21 @@ if __name__ == "__main__":
     experiment_args = experiment_parser.parse_args(
         args="-experiment_config " + args.experiment_config
     )
-    print(f"EXPERIMENT ARGS: {experiment_args}")
+    
+    print(f"EXPERIMENT ARGS:")
+    for k, v in vars(experiment_args).items():
+        print(f"| {k}: {v}")
+    
+    if args.wandb:
+        wandb.init(
+            dir=WANDB_INFO['dir'],
+            project=WANDB_INFO['project'],
+            entity=WANDB_INFO['entity'],
+            config={
+                "model": args.model_name,
+                "dataset": os.path.split(args.dataset_dir)[-1],
+                **vars(experiment_args)
+            },
+        )
 
-    main(experiment_args, args.model_name, args.dataset_dir)
+    main(experiment_args, args.model_name, args.dataset_dir, args.overwrite)

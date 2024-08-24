@@ -136,3 +136,5 @@ dmypy.json
 
 # codebase specific 
 TabZilla/models/hopular/auxiliary/resources/*
+
+environment.py
