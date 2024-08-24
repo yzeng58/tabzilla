@@ -142,3 +142,4 @@ environment.py
 **/wandb/
 **/metadataset_clean.csv
 **/metafeatures_clean.csv
+**/logs/
