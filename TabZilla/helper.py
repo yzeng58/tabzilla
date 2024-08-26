@@ -28,15 +28,17 @@ def init_wandb(
                 this_run = False
                 break
         if this_run: 
-            if run.state != 'finished' or run.state!= 'running' or find_existing_run is not None:
+            if not run.state in ['finished', 'running'] or find_existing_run is not None:
                 # remove crashed one or duplicated one
                 if run.state == 'running':
-                    print('Remove running job: ', run.name)
+                    print(f"Remove duplicated run: {run.name}")
+                    run.delete()
                 elif run.state != 'finished':
                     print(f"Remove crashed run: {run.name}")
-                if run.state == 'finished':
+                    run.delete()
+                elif run.state == 'finished':
                     print(f"Remove duplicated run: {run.name}")
-                run.delete()
+                    run.delete()
             else:
                 find_existing_run = run
 
