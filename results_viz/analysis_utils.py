@@ -26,6 +26,8 @@ ALG_TYPES = {
     "KNN": "baseline",
     "SVM": "baseline",
     "RandomForest": "baseline",
+    'TabFlex': 'pfn',
+    'TabFast': 'pfn',
 }
 
 # display names for each alg
@@ -44,6 +46,8 @@ ALG_DISPLAY_NAMES = {
     "rtdl_ResNet": "ResNet",
     "rtdl_FTTransformer": "FTTransformer",
     "TabPFNModel": "TabPFN",
+    "TabFlexModel": "TabFlex",
+    'TabFastModel': 'TabFast',
     "LightGBM": "LightGBM",
     "XGBoost": "XGBoost",
     "CatBoost": "CatBoost",

@@ -501,4 +501,11 @@ def get_experiment_parser():
         default=0,
         help="Random seed for subset selection.",
     )
+    
+    experiment_parser.add(
+        "--max_n_training_samples",
+        type=int,
+        default=1000000000000000,
+        help='Maximum number of instances to use for training'
+    )
     return experiment_parser

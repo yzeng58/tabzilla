@@ -48,7 +48,6 @@ def init_wandb(
         
     # initialize wandb
     if find_existing_run is None:
-            
         wandb.init(
             project = wandb_proj,
             entity = wandb_entity,

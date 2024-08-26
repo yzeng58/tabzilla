@@ -1,6 +1,6 @@
 from mothernet.prediction.tabpfn import TabPFNClassifier
 from models.basemodel import BaseModel
-import os 
+import os, pdb
 root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 class TabFlexModel(BaseModel):
@@ -14,12 +14,14 @@ class TabFlexModel(BaseModel):
                 device='cuda', 
                 model_string = f'ssm_tabpfn_b4_maxnumclasses100_modellinear_attention_numfeatures1000_n1024_validdatanew_warm_08_23_2024_19_25_40',
                 N_ensemble_configurations=3,
-                epoch = '180',
+                epoch = '260',
             )
+
+        self.max_n_training_samples = args.max_n_training_samples
 
     def fit(self, X, y, X_val=None, y_val=None):
         #WARNING: When overwrite_warning is true, TabPFN will attempt to run on arbitrarily large datasets! This means if you run TabPFN on a large dataset without sketching/sampling it may crash rather than issuing a warning and refusing to run
-        self.model.fit(X, y, overwrite_warning=True)
+        self.model.fit(X[:self.max_n_training_samples,:], y[:self.max_n_training_samples], overwrite_warning=True)
         return [], []
 
     def predict_helper(self, X):

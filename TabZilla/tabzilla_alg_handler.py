@@ -187,6 +187,11 @@ def tabflex():
     from models.tabflex import TabFlexModel as model
     return model
 
+@register_model
+def tabfast():
+    from models.tabfast import TabFastModel as model
+    return model
+
 
 ##############################################################
 # rtdl models (also using torch)

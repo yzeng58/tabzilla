@@ -119,6 +119,7 @@ class TabZillaObjective(object):
                 "cat_dims",
                 "num_classes",
                 "logging_period",
+                "max_n_training_samples",
             ],
         )
 
@@ -149,6 +150,7 @@ class TabZillaObjective(object):
             subset_rows_method=self.experiment_args.subset_rows_method,
             cat_dims=self.dataset.cat_dims,
             num_classes=self.dataset.num_classes,
+            max_n_training_samples=self.experiment_args.max_n_training_samples,
         )
 
         # parameterized model
