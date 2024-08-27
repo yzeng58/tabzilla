@@ -54,7 +54,7 @@ class TabZillaObjective(object):
         self.experiment_args = experiment_args
         self.dataset.subset_random_seed = self.experiment_args.subset_random_seed
         # directory where results will be written
-        output_dir = f'{self.experiment_args.output_dir}/{self.model_handle.__name__}/{self.dataset.name}'
+        output_dir = f'{self.experiment_args.output_dir}/{self.model_handle.__name__}/{self.dataset.name}/{self.experiment_args.max_n_training_samples}'
             
         os.makedirs(output_dir, exist_ok=True)
         
@@ -155,7 +155,7 @@ class TabZillaObjective(object):
 
         # parameterized model
         model = self.model_handle(trial_params, args)
-
+        
         # Cross validate the chosen hyperparameters
         try:
             result = cross_validation(

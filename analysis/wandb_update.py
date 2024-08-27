@@ -28,6 +28,7 @@ runs = api.runs(f"{WANDB_INFO['entity']}/{WANDB_INFO['project']}")
 # print(delete_run)
 
 for run in runs:
-    if not 'max_n_training_samples' in run.config:
-        run.config['max_n_training_samples'] = 1000000000000000
+    if not 'max_n_test_samples' in run.config:
+        run.config['max_n_test_samples'] = 1000000000000000
         run.update()
+    

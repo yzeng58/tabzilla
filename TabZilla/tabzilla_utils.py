@@ -287,7 +287,9 @@ def cross_validation(
         timers["train-eval"].end()
         # evaluate on val set
         timers["val"].start()
-        val_predictions, val_probs = curr_model.predict_wrapper(X_val, args.subset_rows)
+        val_predictions, val_probs = curr_model.predict_wrapper(
+            X_val, args.subset_rows
+        )
         timers["val"].end()
         # evaluate on test set
         timers["test"].start()
@@ -501,7 +503,6 @@ def get_experiment_parser():
         default=0,
         help="Random seed for subset selection.",
     )
-    
     experiment_parser.add(
         "--max_n_training_samples",
         type=int,
