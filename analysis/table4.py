@@ -4,7 +4,7 @@ DATASETS = (
     "openml__GesturePhaseSegmentationProcessed__14969",
     "openml__MiniBooNE__168335",
     "openml__SpeedDating__146607",
-    "openml__ada_agnostic__3896"
+    "openml__ada_agnostic__3896",
     "openml__airlines__189354",
     "openml__albert__189356",
     "openml__artificial-characters__14964",
