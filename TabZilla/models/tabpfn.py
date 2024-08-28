@@ -2,6 +2,8 @@ from mothernet.prediction.tabpfn import TabPFNClassifier
 from models.basemodel import BaseModel
 import numpy as np
 import pdb
+import torch
+torch.set_num_threads(1)
 
 class TabPFNModel(BaseModel):
     def __init__(self, params, args):

@@ -31,7 +31,6 @@ import sys
 sys.path.append(os.getcwd())
 from environment import WANDB_INFO
 
-
 class TabZillaObjective(object):
     """
     adapted from TabSurvey.train.Objective.

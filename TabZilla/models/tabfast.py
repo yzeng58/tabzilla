@@ -3,6 +3,8 @@ from models.basemodel import BaseModel
 import os, pdb
 import numpy as np
 root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import torch
+torch.set_num_threads(1)
 
 class TabFastModel(BaseModel):
     def __init__(self, params, args):
