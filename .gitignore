@@ -145,3 +145,4 @@ environment.py
 **/metadataset_clean_andreas.csv
 **/metadataset_new.csv
 **/logs/
+datasets/
