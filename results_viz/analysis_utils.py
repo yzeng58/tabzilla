@@ -28,6 +28,9 @@ ALG_TYPES = {
     "RandomForest": "baseline",
     'TabFlex': 'pfn',
     'TabFast': 'pfn',
+    'TabLarge': 'pfn',
+    'TabSmall': 'pfn',
+    'Ours': 'pfn',
 }
 
 # display names for each alg
@@ -48,6 +51,8 @@ ALG_DISPLAY_NAMES = {
     "TabPFNModel": "TabPFN",
     "TabFlexModel": "TabFlex",
     'TabFastModel': 'TabFast',
+    "TabLargeModel": "TabLarge",
+    'TabSmallModel': 'TabSmall',
     "LightGBM": "LightGBM",
     "XGBoost": "XGBoost",
     "CatBoost": "CatBoost",
@@ -56,6 +61,7 @@ ALG_DISPLAY_NAMES = {
     "KNN": "KNN",
     "SVM": "SVM",
     "RandomForest": "RandomForest",
+    'Ours': 'Ours',
 }
 
 
