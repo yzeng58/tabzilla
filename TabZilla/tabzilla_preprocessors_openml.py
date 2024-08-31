@@ -1,9 +1,14 @@
 import functools
 
 import numpy as np
-import openml
+import openml, os
 import pandas as pd
 from tabzilla_preprocessor_utils import cv_n_folds, dataset_preprocessor
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Create a folder for storing datasets
+dataset_folder = f'{parent_dir}/datasets'
+openml.config.set_root_cache_directory(dataset_folder)
 
 preprocessor_dict = {}
 

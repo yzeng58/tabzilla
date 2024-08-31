@@ -192,6 +192,16 @@ def tabfast():
     from models.tabfast import TabFastModel as model
     return model
 
+@register_model
+def tablarge():
+    from models.tablarge import TabLargeModel as model
+    return model
+
+@register_model
+def tabsmall():
+    from models.tabsmall import TabSmallModel as model
+    return model
+
 
 ##############################################################
 # rtdl models (also using torch)
