@@ -31,6 +31,7 @@ ALG_TYPES = {
     'TabLarge': 'pfn',
     'TabSmall': 'pfn',
     'Ours': 'pfn',
+    'TuneTables': 'pfn',
 }
 
 # display names for each alg
@@ -53,6 +54,7 @@ ALG_DISPLAY_NAMES = {
     'TabFastModel': 'TabFast',
     "TabLargeModel": "TabLarge",
     'TabSmallModel': 'TabSmall',
+    "TuneTablesModel": "TuneTables",
     "LightGBM": "LightGBM",
     "XGBoost": "XGBoost",
     "CatBoost": "CatBoost",

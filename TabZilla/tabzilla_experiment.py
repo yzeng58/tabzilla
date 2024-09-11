@@ -28,7 +28,8 @@ from tabzilla_utils import (
 
 from helper import init_wandb
 import sys
-sys.path.append(os.getcwd())
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(root_dir)
 from environment import WANDB_INFO
 
 class TabZillaObjective(object):

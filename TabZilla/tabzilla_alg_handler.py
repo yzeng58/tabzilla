@@ -202,6 +202,10 @@ def tabsmall():
     from models.tabsmall import TabSmallModel as model
     return model
 
+@register_model
+def tunetables():
+    from models.tunetables import TunetablesModel as model
+    return model
 
 ##############################################################
 # rtdl models (also using torch)
