@@ -146,3 +146,4 @@ environment.py
 **/metadataset_new.csv
 **/logs/
 datasets/
+**/hyperfast.ckpt

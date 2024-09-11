@@ -207,6 +207,11 @@ def tunetables():
     from models.tunetables import TunetablesModel as model
     return model
 
+@register_model
+def hyperfast():
+    from models.hyperfast import HyperFastModel as model
+    return model
+
 ##############################################################
 # rtdl models (also using torch)
 # code: https://yura52.github.io

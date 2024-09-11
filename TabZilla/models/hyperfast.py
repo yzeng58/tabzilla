@@ -1,16 +1,19 @@
-from tunetables import TuneTablesClassifier
-from models.basemodel import BaseModel
 import torch
+import numpy as np
+from hyperfast import HyperFastClassifier
+from models.basemodel import BaseModel
 torch.set_num_threads(1)
 
-class TunetablesModel(BaseModel):
+class HyperFastModel(BaseModel):
     def __init__(self, params, args):
         super().__init__(params, args)
-        
+
         if args.objective == "regression":
             raise NotImplementedError("Does not support")
         elif args.objective in ["classification", 'binary']:
-            self.model = TuneTablesClassifier()
+            self.model = HyperFastClassifier(
+                device='cuda'
+            )
             
     def fit(self, X, y, X_val=None, y_val=None):
         self.model.fit(X, y)
@@ -36,5 +39,4 @@ class TunetablesModel(BaseModel):
     
     def get_classes(self):
         return self.model.classes_
-    
-    
+
