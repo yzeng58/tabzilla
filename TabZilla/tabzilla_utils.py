@@ -242,11 +242,6 @@ def cross_validation(
     start_time = time.time()
     # iterate over all train/val/test splits in the dataset property split_indeces
     for i, split_dictionary in enumerate(dataset.split_indeces):
-        
-        if time.time() - start_time > time_limit:
-            raise TimeoutException(
-                f"time limit of {time_limit}s reached during fold {i}"
-            )
 
         train_index = split_dictionary["train"]
         val_index = split_dictionary["val"]

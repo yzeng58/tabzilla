@@ -17,7 +17,7 @@ class TabFastModel(BaseModel):
                 device='cuda', 
                 model_string = f'ssm_tabpfn_b4_maxnumclasses100_modellinear_attention_numfeatures1000_n1024_validdatanew_warm_08_23_2024_19_25_40',
                 N_ensemble_configurations=1,
-                epoch = '1410',
+                epoch = '110', # 1410
             )
 
         self.max_n_training_samples = args.max_n_training_samples
