@@ -13,11 +13,15 @@ class TabFlexModel(BaseModel):
         if args.objective == "regression":
             raise NotImplementedError("Does not support")
         elif args.objective in ["classification", 'binary']:
+            if args.checkpoint == 1:
+                epoch = '430'
+            elif args.checkpoint == 2:
+                epoch = '1410'
             self.model = TabPFNClassifier(
                 device='cuda', 
                 model_string = f'ssm_tabpfn_b4_maxnumclasses100_modellinear_attention_numfeatures1000_n1024_validdatanew_warm_08_23_2024_19_25_40',
                 N_ensemble_configurations=3,
-                epoch = '430',
+                epoch = epoch,
             )
 
         self.max_n_training_samples = args.max_n_training_samples

@@ -46,6 +46,7 @@ class TabZillaObjective(object):
         hparam_seed: int,
         random_parameters: bool,
         time_limit: int,
+        checkpoint: int,
     ):
         #  BaseModel handle that will be initialized and trained
         self.model_handle = model_handle
@@ -60,6 +61,7 @@ class TabZillaObjective(object):
         
         self.output_path = Path(output_dir).resolve()
         self.dataset_str = self.dataset.name
+        self.checkpoint = checkpoint
 
         # create the scorer, and get the direction of optimization from the scorer object
         sc_tmp = get_scorer(dataset.target_type)
@@ -120,6 +122,8 @@ class TabZillaObjective(object):
                 "num_classes",
                 "logging_period",
                 "max_n_training_samples",
+                "checkpoint",
+                'dimensionality_reduction_method',
             ],
         )
 
@@ -151,6 +155,8 @@ class TabZillaObjective(object):
             cat_dims=self.dataset.cat_dims,
             num_classes=self.dataset.num_classes,
             max_n_training_samples=self.experiment_args.max_n_training_samples,
+            checkpoint=self.checkpoint,
+            dimensionality_reduction_method=self.experiment_args.dimensionality_reduction_method,
         )
 
         # parameterized model
@@ -206,7 +212,7 @@ def iteration_callback(study, trial):
     print(f"Trial {trial.number + 1} complete")
 
 
-def main(experiment_args, model_name, dataset_dir, overwrite = False):
+def main(experiment_args, model_name, dataset_dir, overwrite = False, checkpoint = 1):
     # read dataset from folder
     dataset = TabularDataset.read(Path(dataset_dir).resolve())
 
@@ -226,6 +232,7 @@ def main(experiment_args, model_name, dataset_dir, overwrite = False):
             hparam_seed=experiment_args.hparam_seed,
             random_parameters=True,
             time_limit=experiment_args.trial_time_limit,
+            checkpoint=checkpoint,
         )
 
         print(
@@ -256,6 +263,7 @@ def main(experiment_args, model_name, dataset_dir, overwrite = False):
             hparam_seed=experiment_args.hparam_seed,
             random_parameters=False,
             time_limit=experiment_args.trial_time_limit,
+            checkpoint=checkpoint,
         )
 
         print(
@@ -314,6 +322,13 @@ if __name__ == "__main__":
     )
     
     parser.add_argument(
+        "--checkpoint",
+        type=int,
+        choices=[1, 2],
+        default=1,
+    )
+    
+    parser.add_argument(
         "--overwrite",
         action="store_true",
         help="overwrite existing results",
@@ -337,6 +352,7 @@ if __name__ == "__main__":
         wandb_config = {
             "model": args.model_name,
             "dataset": os.path.split(args.dataset_dir)[-1],
+            "checkpoint": args.checkpoint,
             **vars(experiment_args)
         }
         init_wandb(
@@ -347,4 +363,4 @@ if __name__ == "__main__":
         )
         
 
-    main(experiment_args, args.model_name, args.dataset_dir, args.overwrite)
+    main(experiment_args, args.model_name, args.dataset_dir, args.overwrite, args.checkpoint)

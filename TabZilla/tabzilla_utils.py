@@ -505,4 +505,11 @@ def get_experiment_parser():
         default=1000000000000000,
         help='Maximum number of instances to use for training'
     )
+    experiment_parser.add(
+        "--dimensionality_reduction_method",
+        type=str,
+        choices=["random_projection", "none"],
+        default="none",
+        help="Method for dimensionality reduction. 'random_projection' means use a random projection to reduce the number of features.",
+    )
     return experiment_parser

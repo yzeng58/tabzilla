@@ -12,6 +12,7 @@ for dataset in "${DATASETS[@]}"; do
         --experiment_config TabZilla/new_experiment_config.yml \
         --dataset_dir "TabZilla/datasets/${dataset}" \
         --model_name tabflex \
+        --checkpoint 2 \
         --wandb
 done
 cd experiments

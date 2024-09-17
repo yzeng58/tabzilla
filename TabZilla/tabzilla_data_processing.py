@@ -6,6 +6,7 @@ from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, QuantileTransformer
+import torch, pdb
 
 
 class SubsetMaker(object):
@@ -206,21 +207,33 @@ def process_data(
         X_val = np.concatenate([new_x1_val, X_val[:, num_mask]], axis=1)
         if verbose:
             print("New Shape:", X_train.shape)
+            
+    if args is not None and args.dimensionality_reduction_method == 'random_projection':
+        random_proj = torch.nn.Linear(args.num_features, args.subset_features, bias=False)
+        with torch.no_grad():
+            X_train = random_proj(torch.tensor(X_train, dtype=torch.float32)).numpy()
+            X_val = random_proj(torch.tensor(X_val, dtype=torch.float32)).numpy()
+            X_test = random_proj(torch.tensor(X_test, dtype=torch.float32)).numpy()
+        num_features = args.subset_features
+        subset_features = -1
+    else:
+        num_features = args.num_features
+        subset_features = args.subset_features
 
     # create subset of dataset if needed
     if (
         args is not None
-        and (args.subset_features > 0 or args.subset_rows > 0)
+        and (subset_features > 0 or args.subset_rows > 0)
         and (
-            args.subset_features < args.num_features or args.subset_rows < len(X_train)
+            subset_features < num_features or args.subset_rows < len(X_train)
         )
     ):
         print(
-            f"making subset with {args.subset_features} features and {args.subset_rows} rows..."
+            f"making subset with {subset_features} features and {args.subset_rows} rows..."
         )
         if getattr(dataset, "ssm", None) is None:
             dataset.ssm = SubsetMaker(
-                args.subset_features,
+                subset_features,
                 args.subset_rows,
                 args.subset_features_method,
                 args.subset_rows_method,
