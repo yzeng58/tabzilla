@@ -324,7 +324,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "--checkpoint",
         type=int,
-        choices=[1, 2],
         default=1,
     )
     

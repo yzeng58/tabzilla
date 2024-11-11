@@ -12,6 +12,7 @@ for dataset in "${DATASETS[@]}"; do
         --experiment_config TabZilla/3000samples_experiment_config.yml \
         --dataset_dir "TabZilla/datasets/${dataset}" \
         --model_name tabsmall \
-        --wandb
+        --wandb \
+        --checkpoint 2
 done
 cd experiments
