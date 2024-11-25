@@ -223,7 +223,7 @@ def tabsoftcapping():
     return model
 
 @register_model
-def tabslding():
+def tabsliding():
     from models.tabsliding import TabSlidingModel as model
     return model
 
