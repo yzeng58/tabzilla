@@ -212,6 +212,21 @@ def hyperfast():
     from models.hyperfast import HyperFastModel as model
     return model
 
+@register_model
+def tablinear():
+    from models.tabpfn_linear import TabLinearModel as model
+    return model
+
+@register_model
+def tabsoftcapping():
+    from models.tabsoftcapping import TabSoftCappingModel as model
+    return model
+
+@register_model
+def tabslding():
+    from models.tabsliding import TabSlidingModel as model
+    return model
+
 ##############################################################
 # rtdl models (also using torch)
 # code: https://yura52.github.io

@@ -11,6 +11,7 @@ for dataset in "${DATASETS[@]}"; do
     CUDA_VISIBLE_DEVICES=$2 python TabZilla/tabzilla_experiment.py \
         --experiment_config TabZilla/3000samples_experiment_config.yml \
         --dataset_dir "TabZilla/datasets/${dataset}" \
-        --model_name TabPFNModel 
+        --model_name tablinear \
+        --wandb
 done
 cd experiments

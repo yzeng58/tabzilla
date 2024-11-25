@@ -23,4 +23,6 @@ early_stopping_rounds: 20
 epochs: 500
 logging_period: 100
 scale_numerical_features: Quantile
+subset_features: 100
+subset_features_method: mutual_information
 max_n_training_samples: 3000

@@ -1,11 +1,12 @@
 from mothernet.prediction.tabpfn import TabPFNClassifier
 from models.basemodel import BaseModel
+import os, pdb
 import numpy as np
-import pdb
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import torch
 torch.set_num_threads(1)
 
-class TabPFNModel(BaseModel):
+class TabSlidingModel(BaseModel):
     def __init__(self, params, args):
         super().__init__(params, args)
 
@@ -14,12 +15,12 @@ class TabPFNModel(BaseModel):
         elif args.objective in ["classification", 'binary']:
             self.model = TabPFNClassifier(
                 device='cuda', 
-                N_ensemble_configurations=32, 
-                model_string = 'prior_diff_real_checkpoint_n_0',
-                epoch = '100',
+                model_string = f'tabpfn_flexattnmodesliding_window_modelflex_attention_n1024_warm_11_24_2024_19_50_44_epoch_60.cpkt',
+                N_ensemble_configurations=3,
+                epoch = '60',
             )
+
         self.max_n_training_samples = args.max_n_training_samples
-        self.subset_rows = args.subset_rows
 
     def fit(self, X, y, X_val=None, y_val=None):
         #WARNING: When overwrite_warning is true, TabPFN will attempt to run on arbitrarily large datasets! This means if you run TabPFN on a large dataset without sketching/sampling it may crash rather than issuing a warning and refusing to run
@@ -36,8 +37,7 @@ class TabPFNModel(BaseModel):
         return [], []
 
     def predict_helper(self, X):
-        y = self.model.predict(X)
-        return y
+        return self.model.predict(X)
 
     @classmethod
     def define_trial_parameters(cls, trial, args):

@@ -482,7 +482,7 @@ def get_experiment_parser():
     experiment_parser.add(
         "--subset_rows_method",
         type=str,
-        choices=["random", "first"],
+        choices=["random", "first", "mutual_information"],
         default="random",
         help="Method for selecting rows. 'random' means select randomly, 'first' means select the first rows.",
     )
