@@ -13,11 +13,15 @@ class TabSmallModel(BaseModel):
         if args.objective == "regression":
             raise NotImplementedError("Does not support")
         elif args.objective in ["classification", 'binary']:
+            if args.checkpoint == 1:
+                epoch = '1210'
+            elif args.checkpoint == 2:
+                epoch = '3110'
             self.model = TabPFNClassifier(
                 device='cuda', 
                 model_string = f'ssm_tabpfn_modellinear_attention_08_28_2024_19_00_44',
                 N_ensemble_configurations=3,
-                epoch = '1210',
+                epoch = epoch,
             )
 
         self.max_n_training_samples = args.max_n_training_samples

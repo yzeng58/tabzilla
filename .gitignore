@@ -147,3 +147,4 @@ environment.py
 **/logs/
 datasets/
 **/hyperfast.ckpt
+**/submit

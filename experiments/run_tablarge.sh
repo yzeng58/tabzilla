@@ -9,10 +9,10 @@ for dataset in "${DATASETS[@]}"; do
     python tabzilla_data_preprocessing.py --dataset_name $dataset
     cd ..
     CUDA_VISIBLE_DEVICES=$2 python TabZilla/tabzilla_experiment.py \
-        --experiment_config TabZilla/new_experiment_config.yml \
+        --experiment_config TabZilla/100000train_samples_experiment_config.yml \
         --dataset_dir "TabZilla/datasets/${dataset}" \
-        --model_name tabflex \
-        --checkpoint 3 \
-        --wandb
+        --model_name tablarge \
+        --wandb \
+        --checkpoint 3
 done
 cd experiments

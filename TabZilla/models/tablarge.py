@@ -17,6 +17,8 @@ class TabLargeModel(BaseModel):
                 epoch = '430'
             elif args.checkpoint == 2:
                 epoch = '880'
+            elif args.checkpoint == 3:
+                epoch = '1590'
             self.model = TabPFNClassifier(
                 device='cuda', 
                 model_string = f'ssm_tabpfn_b4_maxnumclasses100_modellinear_attention_numfeatures4500_n1024_validdatanew_08_16_2024_20_57_16',
