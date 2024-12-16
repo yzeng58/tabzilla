@@ -188,18 +188,23 @@ def tabflex():
     return model
 
 @register_model
-def tabfast():
-    from models.tabfast import TabFastModel as model
+def tabflexh1k():
+    from models.tabflexh1k import TabFlexH1KModel as model
     return model
 
 @register_model
-def tablarge():
-    from models.tablarge import TabLargeModel as model
+def tabflexl100():
+    from models.tabflexl100 import TabFlexL100Model as model
     return model
 
 @register_model
-def tabsmall():
-    from models.tabsmall import TabSmallModel as model
+def tabflexh5k():
+    from models.tabflexh5k import TabFlexH5KModel as model
+    return model
+
+@register_model
+def tabflexs100():
+    from models.tabflexs100 import TabFlexS100Model as model
     return model
 
 @register_model

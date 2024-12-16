@@ -1,4 +1,4 @@
-from ticl.prediction.tabflex import TabFlex
+from ticl.prediction.tabpfn import TabPFNClassifier
 from models.basemodel import BaseModel
 import os, pdb
 import numpy as np
@@ -6,14 +6,25 @@ root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 import torch
 torch.set_num_threads(1)
 
-class TabFlexModel(BaseModel):
+class TabFlexH5KModel(BaseModel):
     def __init__(self, params, args):
         super().__init__(params, args)
 
         if args.objective == "regression":
             raise NotImplementedError("Does not support")
         elif args.objective in ["classification", 'binary']:
-            self.model = TabFlex()
+            if args.checkpoint == 1:
+                epoch = '430'
+            elif args.checkpoint == 2:
+                epoch = '880'
+            elif args.checkpoint == 3:
+                epoch = '1590'
+            self.model = TabPFNClassifier(
+                device='cuda', 
+                model_string = f'ssm_tabpfn_b4_maxnumclasses100_modellinear_attention_numfeatures4500_n1024_validdatanew_08_16_2024_20_57_16',
+                N_ensemble_configurations=3,
+                epoch = epoch,
+            )
 
         self.max_n_training_samples = args.max_n_training_samples
 

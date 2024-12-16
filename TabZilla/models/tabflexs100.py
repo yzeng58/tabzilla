@@ -1,4 +1,4 @@
-from mothernet.prediction.tabpfn import TabPFNClassifier
+from ticl.prediction.tabpfn import TabPFNClassifier
 from models.basemodel import BaseModel
 import os, pdb
 import numpy as np
@@ -6,7 +6,7 @@ root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 import torch
 torch.set_num_threads(1)
 
-class TabSmallModel(BaseModel):
+class TabFlexS100Model(BaseModel):
     def __init__(self, params, args):
         super().__init__(params, args)
 
